@@ -1,25 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useCallback} from 'react';
+import {
+  Form,
+  Input,
+  Select,
+  Button
+} from 'antd';
+import {
+  Field,
+  InternalField
+} from './core/Field';
+import 'antd/dist/antd.css';
 import './App.css';
 
+const FormItem = Form.Item;
+
 function App() {
+  const [form] = Form.useForm();
+  const handleRandomValue = useCallback(() => {
+    form.setFieldsValue({
+      name: Math.random() * 100,
+      birthday: Math.random() * 100
+    });
+    console.log(form.getFieldsValue());
+  }, [form]);
+  console.log('-----');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Form className="form-test"
+          form={form}
+          layout="horizontal">
+      <InternalField>
+        <FormItem label="name"
+                  name="name"
+                  rules={[{required: true}]}>
+          <Input/>
+        </FormItem>
+      </InternalField>
+      <Field label="birthday" name="birthday"/>
+      <FormItem label="sex" name="sex">
+        <Select/>
+      </FormItem>
+      <FormItem>
+        <Button onClick={handleRandomValue}>random</Button>
+      </FormItem>
+    </Form>
   );
 }
 
